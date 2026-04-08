@@ -75,31 +75,9 @@
       </ul>
     </div>
 
-    <!-- DNA helix illustration -->
+    <!-- DNA × Faixa Preta brand mark -->
     <div class="hero__dna" aria-hidden="true">
-      <svg viewBox="0 0 400 900" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="26">
-          <!-- Strand A -->
-          <path d="M 80 40 C 80 140 320 140 320 240 C 320 340 80 340 80 440 C 80 540 320 540 320 640 C 320 740 80 740 80 840"/>
-          <!-- Strand B -->
-          <path d="M 320 40 C 320 140 80 140 80 240 C 80 340 320 340 320 440 C 320 540 80 540 80 640 C 80 740 320 740 320 840"/>
-        </g>
-        <!-- Wide rungs at extremum points -->
-        <g stroke="currentColor" stroke-width="22" stroke-linecap="round">
-          <line x1="88" y1="40"  x2="312" y2="40"/>
-          <line x1="88" y1="240" x2="312" y2="240"/>
-          <line x1="88" y1="440" x2="312" y2="440"/>
-          <line x1="88" y1="640" x2="312" y2="640"/>
-          <line x1="88" y1="840" x2="312" y2="840"/>
-        </g>
-        <!-- Short rungs at crossings -->
-        <g stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".82">
-          <line x1="170" y1="140" x2="230" y2="140"/>
-          <line x1="170" y1="340" x2="230" y2="340"/>
-          <line x1="170" y1="540" x2="230" y2="540"/>
-          <line x1="170" y1="740" x2="230" y2="740"/>
-        </g>
-      </svg>
+      <img src="assets/bbr-dna.png" alt="" />
     </div>
   </div>
 </section>
@@ -402,6 +380,23 @@
       it.addEventListener('click', () => setBelt(it));
     });
 
+    // Scroll-based belt evolution — when a card crosses the viewport center,
+    // promote the tracker to that belt. Works on touch devices and desktop alike.
+    const cardIo = new IntersectionObserver((entries) => {
+      // pick the entry closest to the viewport center
+      let best = null;
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+        }
+      });
+      if (best) setBelt(best.target);
+    }, {
+      threshold: [0.55, 0.75, 0.95],
+      rootMargin: '-30% 0px -30% 0px'
+    });
+    items.forEach((it) => cardIo.observe(it));
+
     // Auto-play progression when section enters viewport (one time)
     let played = false;
     const sectionIo = new IntersectionObserver((entries) => {
@@ -431,6 +426,16 @@
     }, { threshold: [0], rootMargin: '-82px 0px 0px 0px' });
     pinIo.observe(pinSensor);
   })();
+
+  /* -------- Instructor card tap toggle (mobile-friendly highlight) -------- */
+  document.querySelectorAll('.team .card').forEach((c) => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.team .card.is-tapped').forEach((x) => {
+        if (x !== c) x.classList.remove('is-tapped');
+      });
+      c.classList.toggle('is-tapped');
+    });
+  });
 
   // Reveal on scroll — minimal
   const io = new IntersectionObserver((entries) => {
