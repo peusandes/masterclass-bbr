@@ -348,9 +348,10 @@ body::before {
   font-size: clamp(48px, 7.4vw, 112px);
   line-height: 1;
   letter-spacing: -0.035em;
-  margin: 0 0 28px;
+  margin: 0 auto 28px;
   color: var(--ink);
   max-width: 12ch;
+  text-align: center;
 }
 
 .hero__lede {
