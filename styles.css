@@ -430,8 +430,8 @@ body::before {
 .hero__info-ico {
   width: 30px; height: 30px;
   border-radius: 999px;
-  border: 1.5px solid var(--green);
-  color: var(--green);
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
   display: inline-flex;
   align-items: center; justify-content: center;
   flex: none;
